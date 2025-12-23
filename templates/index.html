@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MekongSMS Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .main-container { max-width: 800px; margin-top: 50px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; border-radius: 15px 15px 0 0 !important; padding: 25px; }
+        .nav-pills .nav-link.active { background-color: #007bff; }
+        .nav-pills .nav-link { color: #495057; font-weight: 500; }
+
+        body {
+    background-color: #f0f2f5;
+    font-family: 'Roboto Condensed', sans-serif; /* <--- CHANGED THIS */
+    }
+        /* Optional: Make headers slightly bolder like Aptos */
+    h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    }   
+    </style>
+</head>
+<body>
+
+<div class="container main-container">
+    
+    <div class="card">
+        <div class="card-header text-center">
+            <h2><i class="fas fa-sms"></i> MekongSMS Dashboard</h2>
+            <p class="mb-0 opacity-75">Internal API Testing Tool</p>
+        </div>
+        
+        <div class="card-body p-4">
+
+            {% if result %}
+            <div class="alert alert-{{ res_type }} alert-dismissible fade show" role="alert">
+                {{ result|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endif %}
+
+            <ul class="nav nav-pills nav-fill mb-4" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link {% if active_tab == 'api1' %}active{% endif %}" id="pills-api1-tab" data-bs-toggle="pill" data-bs-target="#pills-api1" type="button">
+                        <i class="fas fa-paper-plane"></i> Standard API (Option 1)
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link {% if active_tab == 'api2' %}active{% endif %}" id="pills-api2-tab" data-bs-toggle="pill" data-bs-target="#pills-api2" type="button">
+                        <i class="fas fa-server"></i> SMPP API (Option 2)
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+                
+                <div class="tab-pane fade {% if active_tab == 'api1' %}show active{% endif %}" id="pills-api1">
+                    <div class="p-3 border rounded bg-light">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Phone Number</label>
+                                <input type="text" name="phone" class="form-control" placeholder="85512xxxxxxx" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Message</label>
+                                <textarea name="message" class="form-control" rows="3" placeholder="Enter OTP..." required></textarea>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" name="btn_api1" class="btn btn-primary btn-lg">Send via Standard API</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade {% if active_tab == 'api2' %}show active{% endif %}" id="pills-api2">
+                    <div class="p-3 border rounded bg-light">
+                        <form method="POST">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">From (Sender ID)</label>
+                                    <input type="text" name="from" class="form-control" placeholder="Sender ID" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Gateway ID</label>
+                                    <input type="text" name="gateway" class="form-control" placeholder="Gateway Name" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">To (Phone Number)</label>
+                                <input type="text" name="to" class="form-control" placeholder="85512xxxxxxx" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Message Content</label>
+                                <textarea name="message" class="form-control" rows="3" placeholder="Enter message..." required></textarea>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" name="btn_api2" class="btn btn-success btn-lg">Send via SMPP API</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
